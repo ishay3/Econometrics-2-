@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from statsmodels.tsa.stattools import adfuller, kpss
-from statsmodels.stats.diagnostic import acorr_ljungbox
 from statsmodels.tsa.ardl import ARDL, ardl_select_order
 from scipy import stats
 import warnings
@@ -206,20 +205,6 @@ def diagnostic_tests(ardl_results):
         print("  Result: Residuals appear normally distributed (fail to reject H0)")
     else:
         print("  Result: Residuals are NOT normally distributed (reject H0)")
-    
-    # Ljung-Box test for serial correlation
-    try:
-        lb_test = acorr_ljungbox(residuals, lags=10, return_df=True)
-        print(f"\nLjung-Box Test (Serial Correlation):")
-        print(f"  P-value at lag 10: {lb_test['lb_pvalue'].iloc[-1]:.4f}")
-        if lb_test['lb_pvalue'].iloc[-1] > 0.05:
-            print("  Result: No evidence of serial correlation (fail to reject H0)")
-        else:
-            print("  Result: Evidence of serial correlation (reject H0)")
-    except Exception as e:
-        print(f"\nLjung-Box test could not be performed: {e}")
-    
-    print("="*60 + "\n")
     
     return residuals
 
